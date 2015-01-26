@@ -53,15 +53,18 @@
       if(substr($value, 0, 1) == '-'){
         //is negative special tag
         $special_tag_type = 1;
+        //cut - off start of string
+        $tag_str = substr($value, 1);
+        $special_tag_pos--;
       } else {
         //is positive special tag
         $special_tag_type = 0;
+        $tag_str = $value;
       }
       //find out what special tag it is. get first part of tag
-      if(substr($value, $special_tag_type, $special_tag_pos) == "rating"){
+      if(substr($tag_str, 0, $special_tag_pos) == "rating"){
         //find what rating to filter by
-        die("test");
-        $rating_string = substr($value, $special_tag_pos+1);
+        $rating_string = substr($tag_str, $special_tag_pos+1);
           if($rating_string === 's'){
             if($special_tag_type === 1){
               $additional_where = " and s.rating!='0'";
