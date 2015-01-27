@@ -21,9 +21,9 @@
             die("Unable to fetch that URL.");
           }
           $filesize = strlen($got_image);
-          $extention = exif_imagetype($url);
-          $extention = image_type_to_extension($extention, false);
-          $full_name = "uploads/" . $file_name . '.' . $extention;
+          $image_extention = exif_imagetype($url);
+          $image_extention = image_type_to_extension($image_extention, false);
+          $full_name = "uploads/" . $file_name . '.' . $image_extention;
           //check to make sure not duplicate image
           $file_hash = sha1_file($url);
           $query = 'select sub_id from sub where hash="' . $file_hash . '";';
