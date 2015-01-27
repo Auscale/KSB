@@ -39,7 +39,7 @@
       //image, so delete thumbs
       unlink('uploads/thumbs/' . $filename . '.png');
       if($lr_exists == 1){
-        unlink('uploads/LR/' . $filename . '.png');
+        unlink('uploads/lr/' . $filename . '.png');
       }
     }
     //add delete audit table.
