@@ -106,7 +106,12 @@
         $user_id = $_SESSION['user_id'];
         //insert new data
         $mysql_time = date("Y-m-d H:i:s", time());
-        $query = "insert into sub (title, type, description, rating, hash, filename, extention, source, create_date, create_by, resolution_w, resolution_h, upload_method) values ('" . $sub_title . "',1,'" . $sub_desc . "','" . $sub_rating . "','" . $file_hash . "','" . $file_name . "','" . $image_extention .  "','" . $source . "','" . $mysql_time . "','" . $user_id . "','" . $image_resolution[0] . "','" . $image_resolution[1] . "','file');";
+        if($image_resolution[0] > $lr_size || $image_resolution[1] > $lr_size){
+          $lr_exists = 1;
+        } else {
+          $lr_exists = 0;
+        }
+        $query = "insert into sub (title, type, description, rating, hash, filename, extention, source, create_date, create_by, resolution_w, resolution_h, upload_method, lr_exists) values ('" . $sub_title . "',1,'" . $sub_desc . "','" . $sub_rating . "','" . $file_hash . "','" . $file_name . "','" . $image_extention .  "','" . $source . "','" . $mysql_time . "','" . $user_id . "','" . $image_resolution[0] . "','" . $image_resolution[1] . "','file','" . $lr_exists . "');";
         //run query
         $query_result = mysqli_query($con, $query);
         if (!$query_result) {
@@ -129,30 +134,33 @@
         $tag_array = array_keys(array_flip($tag_array));
         //check if tags exist, if not, add them.
         foreach($tag_array as $value){
-          $query = "select tag_id from tag where name='$value';";
-          $result = mysqli_query($con, $query);
-          if(!$result){
-            die(mysqli_error($con));
-          }
-          $count = mysqli_num_rows($result);
-          if($count === 0){
-            //don't exist, add it.
-            $query = "insert into tag (name, type) values ('$value',0)";
+          //skip tags with silly characters like : and -
+          if(strpos($value, ':') === false && strpos($value, '-') === false){
+            $query = "select tag_id from tag where name='$value';";
             $result = mysqli_query($con, $query);
             if(!$result){
               die(mysqli_error($con));
             }
-            $tag_id = mysqli_insert_id($con);
-          } else {
-            //get id of tag
-            $row = mysqli_fetch_array($result);
-            $tag_id = $row[0];
-          }
-          //record tag for this sub
-          $query = "insert into sub_tag (sub_id, tag_id, create_date, create_by) values ('$sub_id', '$tag_id', '$mysql_time', '$user_id');";
-          $result = mysqli_query($con, $query);
-          if(!$result){
-            die(mysqli_error($con));
+            $count = mysqli_num_rows($result);
+            if($count === 0){
+              //don't exist, add it.
+              $query = "insert into tag (name, type) values ('$value',0)";
+              $result = mysqli_query($con, $query);
+              if(!$result){
+                die(mysqli_error($con));
+              }
+              $tag_id = mysqli_insert_id($con);
+            } else {
+              //get id of tag
+              $row = mysqli_fetch_array($result);
+              $tag_id = $row[0];
+            }
+            //record tag for this sub
+            $query = "insert into sub_tag (sub_id, tag_id, create_date, create_by) values ('$sub_id', '$tag_id', '$mysql_time', '$user_id');";
+            $result = mysqli_query($con, $query);
+            if(!$result){
+              die(mysqli_error($con));
+            }
           }
         }
         unset($value);
@@ -202,7 +210,7 @@
           echo("Failed to create thumbnail...");
         } else {
           //create low res only if image larger than LR size
-          if($image_resolution[0] > $lr_size || $image_resolution[1] > $lr_size){
+          if($lr_exists === 1){
             $result = create_thumb($lr_size, $full_name, "uploads/LR/" . $file_name);
           }
           if(!$result){

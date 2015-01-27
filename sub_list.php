@@ -65,26 +65,37 @@
       if(substr($tag_str, 0, $special_tag_pos) == "rating"){
         //find what rating to filter by
         $rating_string = substr($tag_str, $special_tag_pos+1);
-          if($rating_string === 's'){
-            if($special_tag_type === 1){
-              $additional_where = " and s.rating!='0'";
-            } else {
-              $additional_where = " and s.rating='0'";
-            }
-          } else if($rating_string === 'm'){
-            if($special_tag_type === 1){
-              $additional_where = " and s.rating!='1'";
-            } else {
-              $additional_where = " and s.rating='1'";
-            }
-          } else if($rating_string === 'e'){
-            if($special_tag_type === 1){
-              $additional_where = " and s.rating!='2'";
-            } else {
-              $additional_where = " and s.rating='2'";
-            }
+        if($rating_string === 's'){
+          if($special_tag_type === 1){
+            $additional_where = " and s.rating!='0'";
+          } else {
+            $additional_where = " and s.rating='0'";
           }
-        
+        } else if($rating_string === 'm'){
+          if($special_tag_type === 1){
+            $additional_where = " and s.rating!='1'";
+          } else {
+            $additional_where = " and s.rating='1'";
+          }
+        } else if($rating_string === 'e'){
+          if($special_tag_type === 1){
+            $additional_where = " and s.rating!='2'";
+          } else {
+            $additional_where = " and s.rating='2'";
+          }
+        } else {
+          //incorrect 2nd part of tag
+        }
+      } else if(substr($tag_str, 0, $special_tag_pos) == "order"){
+        //get what we're ordering by
+        $order_string = substr($tag_str, $special_tag_pos+1);
+        if($order_string === 'score'){
+          //set ordering to score
+          $ordering = "score desc";
+        }
+      } else {
+        //incorrect tag. What do?
+        $additional_where = " and 1=2";
       }
     } else {
       if(substr($value, 0, 1) == '-'){
@@ -130,6 +141,10 @@
   } else {
     $mode = '';
   }
+  //set ordering default to new first if no other ordering has been done
+  if(!isset($ordering)){
+    $ordering = "create_date desc";
+  }
   //set queries based on mode
   if($tag_search === 1){
     if($mode === 'fav'){
@@ -139,7 +154,7 @@
       if(!$tag_result){
         die(mysqli_error($con));
       }
-      $sub_query = "select res.sub_id, res.type, res.title, res.score, res.rating, res.filename from(select s.sub_id, s.type, s.title, s.score, s.rating, s.filename, s.create_date, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id join user_sub_fav usf on usf.sub_id = s.sub_id where usf.user_id='$user_id'$additional_where group by s.sub_id)res where res.positive >= $pos_tag_count and res.negative = 0 order by res.create_date desc limit $pag_from, $load_subs;";
+      $sub_query = "select res.sub_id, res.type, res.title, res.score, res.rating, res.filename from(select s.sub_id, s.type, s.title, s.score, s.rating, s.filename, s.create_date, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id join user_sub_fav usf on usf.sub_id = s.sub_id where usf.user_id='$user_id'$additional_where group by s.sub_id)res where res.positive >= $pos_tag_count and res.negative = 0 order by res.$ordering limit $pag_from, $load_subs;";
       $sub_result = mysqli_query($con, $sub_query);
       if(!$sub_result){
         die(mysqli_error($con));
@@ -151,7 +166,7 @@
       if(!$tag_result){
         die(mysqli_error($con));
       }
-      $sub_query = "select res.sub_id, res.type, res.title, res.score, res.rating, res.filename from(select s.sub_id, s.type, s.title, s.score, s.rating, s.filename, s.create_date, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id where s.create_by='$user_id'$additional_where group by s.sub_id)res where res.positive >= $pos_tag_count and res.negative = 0 order by res.create_date desc limit $pag_from, $load_subs;";
+      $sub_query = "select res.sub_id, res.type, res.title, res.score, res.rating, res.filename from(select s.sub_id, s.type, s.title, s.score, s.rating, s.filename, s.create_date, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id where s.create_by='$user_id'$additional_where group by s.sub_id)res where res.positive >= $pos_tag_count and res.negative = 0 order by res.$ordering limit $pag_from, $load_subs;";
       $sub_result = mysqli_query($con, $sub_query);
       if(!$sub_result){
         die(mysqli_error($con));
@@ -163,7 +178,7 @@
       if(!$tag_result){
         die(mysqli_error($con));
       }
-      $sub_query = "select res.sub_id, res.type, res.title, res.score, res.rating, res.filename from(select s.sub_id, s.type, s.title, s.score, s.rating, s.filename, s.create_date, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t	on t.tag_id = st.tag_id where 1=1$additional_where group by s.sub_id)res where res.positive >= $pos_tag_count and res.negative = 0 order by res.create_date desc limit $pag_from, $load_subs;";
+      $sub_query = "select res.sub_id, res.type, res.title, res.score, res.rating, res.filename from(select s.sub_id, s.type, s.title, s.score, s.rating, s.filename, s.create_date, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t	on t.tag_id = st.tag_id where 1=1$additional_where group by s.sub_id)res where res.positive >= $pos_tag_count and res.negative = 0 order by res.$ordering limit $pag_from, $load_subs;";
       $sub_result = mysqli_query($con, $sub_query);
       if(!$sub_result){
         die(mysqli_error($con));
@@ -177,7 +192,11 @@
       if(!$tag_result){
         die(mysqli_error($con));
       }
-      $sub_query = "select s.sub_id, s.type, s.title, s.score, s.rating, s.filename from sub s join user_sub_fav usf on usf.sub_id = s.sub_id where usf.user_id='$user_id' order by s.create_date desc limit $pag_from, $load_subs;";
+      $order_table = 'usf';
+      if($ordering === 'score desc'){
+        $order_table = 's';
+      }
+      $sub_query = "select s.sub_id, s.type, s.title, s.score, s.rating, s.filename from sub s join user_sub_fav usf on usf.sub_id = s.sub_id where usf.user_id='$user_id' order by $order_table.$ordering limit $pag_from, $load_subs;";
       $sub_result = mysqli_query($con, $sub_query);
       if(!$sub_result){
         die(mysqli_error($con));
@@ -189,7 +208,7 @@
       if(!$tag_result){
         die(mysqli_error($con));
       }
-      $sub_query = "select sub_id, type, title, score, rating, filename from sub where create_by='$user_id' order by create_date desc limit $pag_from, $load_subs;";
+      $sub_query = "select sub_id, type, title, score, rating, filename from sub where create_by='$user_id' order by $ordering limit $pag_from, $load_subs;";
       $sub_result = mysqli_query($con, $sub_query);
       if(!$sub_result){
         die(mysqli_error($con));
@@ -201,7 +220,7 @@
       if(!$tag_result){
         die(mysqli_error($con));
       }
-      $sub_query = "select sub_id, type, title, score, rating, filename from sub order by create_date desc limit $pag_from, $load_subs;";
+      $sub_query = "select sub_id, type, title, score, rating, filename from sub order by $ordering limit $pag_from, $load_subs;";
       $sub_result = mysqli_query($con, $sub_query);
       if(!$sub_result){
         die(mysqli_error($con));
@@ -333,6 +352,9 @@
               } else if($mode === 'fav'){
                 echo('<input type="hidden" name="m" value="fav">');
               }
+              if(isset($_GET['user'])){
+                echo('<input type="hidden" name="user" value="' . $_GET['user'] . '">');
+              }
             ?>
             <input type="text" id="search_box" name="tags" <?php echo('value="' . stripslashes($get_tag_string) . '"'); ?> placeholder="Search..." autofocus>
           </form>
@@ -374,6 +396,18 @@
                 echo("Nuthin here.");  
               } else {
                 while ($row = mysqli_fetch_array($sub_result)){
+                  //fav count
+                  $query = "select count(*) from user_sub_fav where sub_id='" . $row[0] . "' group by sub_id;";
+                  $result = mysqli_query($con, $query);
+                  if(!$result){
+                    die(mysqli_error());
+                  }
+                  $count = mysqli_fetch_array($result);
+                  if($count[0] == ''){
+                    $fav_count = 0;
+                  } else {
+                    $fav_count = $count[0]; 
+                  }
                   //set ratings
                   if($row[4] == 0){
                     $rating = '<span class="sub_rating sub_positive" href="#">S</span>';
@@ -411,7 +445,7 @@
                       <div class="sub_stats">'
                         . $score . '</span>
                         <i class="fa fa-exclamation-triangle"></i>' . $rating . '
-                        <i class="fa fa-heart"></i><span class="sub_fav" href="#">82</span>
+                        <i class="fa fa-heart"></i><span class="sub_fav" href="#">' . $fav_count . '</span>
                         <i class="fa fa-comment"></i><span class="sub_com" href="#">28</span>
                       </div>
                     </div>

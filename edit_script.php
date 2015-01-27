@@ -69,30 +69,33 @@
           $tag_array = explode(" ", $tag_string);
           //check if tags exist, if not, add them.
           foreach($tag_array as $value){
-            $query = "select tag_id from tag where name='$value';";
-            $result = mysqli_query($con, $query);
-            if(!$result){
-              die(mysqli_error($con));
-            }
-            $count = mysqli_num_rows($result);
-            if($count != 1){
-              //don't exist, add it.
-              $query = "insert into tag (name, type) values ('$value',0)";
+            //skip tags with silly characters like : and -
+            if(strpos($value, ':') === false && strpos($value, '-') === false){
+              $query = "select tag_id from tag where name='$value';";
               $result = mysqli_query($con, $query);
               if(!$result){
                 die(mysqli_error($con));
               }
-              $tag_id = mysqli_insert_id($con);
-            } else {
-              //get id of tag
-              $row = mysqli_fetch_array($result);
-              $tag_id = $row[0];
-            }
-            //record tag for this sub
-            $query = "insert into sub_tag (sub_id, tag_id, create_date, create_by) values ('$sub_id', '$tag_id', '$mysql_time', '$user_id');";
-            $result = mysqli_query($con, $query);
-            if(!$result){
-              die(mysqli_error($con));
+              $count = mysqli_num_rows($result);
+              if($count != 1){
+                //don't exist, add it.
+                $query = "insert into tag (name, type) values ('$value',0)";
+                $result = mysqli_query($con, $query);
+                if(!$result){
+                  die(mysqli_error($con));
+                }
+                $tag_id = mysqli_insert_id($con);
+              } else {
+                //get id of tag
+                $row = mysqli_fetch_array($result);
+                $tag_id = $row[0];
+              }
+              //record tag for this sub
+              $query = "insert into sub_tag (sub_id, tag_id, create_date, create_by) values ('$sub_id', '$tag_id', '$mysql_time', '$user_id');";
+              $result = mysqli_query($con, $query);
+              if(!$result){
+                die(mysqli_error($con));
+              }
             }
           }
           unset($value);
