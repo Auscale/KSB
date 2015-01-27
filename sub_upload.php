@@ -2,7 +2,7 @@
   
   //size in pixels for the low-res version of the image
   $lr_size = 1000;
-  
+  $max_size = 20000000;
   session_start();
   $con = mysqli_connect("localhost", "root", "", "ksb");
   
@@ -21,11 +21,11 @@
             die("Unable to fetch that URL.");
           }
           $filesize = strlen($got_image);
-          $extention = exif_imagetype($got_image);
+          $extention = exif_imagetype($url);
           $extention = image_type_to_extension($extention, false);
           $full_name = "uploads/" . $file_name . '.' . $extention;
           //check to make sure not duplicate image
-          $file_hash = sha1_file($got_image);
+          $file_hash = sha1_file($url);
           $query = 'select sub_id from sub where hash="' . $file_hash . '";';
           $result = mysqli_query($con,$query);
           if(!$result){
@@ -38,7 +38,7 @@
             die();
           }
           //check image size to verify it's an image
-          $image_resolution = getimagesize($got_image);
+          $image_resolution = getimagesize($url);
           if($image_resolution == 0){
             echo("Whoops. That doesn't look like an image to me... Maybe it's corrupt? Or maybe you're just being silly. Either way, something went wrong.");
             die();
@@ -59,7 +59,6 @@
             echo('Hacking attempt logged...');
           }
           $uploadOk = 1;
-          $max_size = 20000000;
           $image_extention = exif_imagetype($_FILES['file_upload']['tmp_name']);
           $image_extention = image_type_to_extension($image_extention, false);
           $file_name = uniqid();
@@ -209,12 +208,13 @@
         if(!$result){
           echo("Failed to create thumbnail...");
         } else {
-          //create low res only if image larger than LR size
+          //create low res only if lr exists
           if($lr_exists === 1){
-            $result = create_thumb($lr_size, $full_name, "uploads/LR/" . $file_name);
+            $result = create_thumb($lr_size, $full_name, "uploads/lr/" . $file_name);
           }
           if(!$result){
             echo("Failed to create low-res version...");
+            die();
           } else {
             //redirect to their shiny new upload
             header('location:view_sub.php?sub=' . $sub_id);
