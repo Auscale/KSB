@@ -2,7 +2,7 @@
   
   //size in pixels for the low-res version of the image
   $lr_size = 1000;
-  $max_size = 20000000;
+  $max_size = 50000000;
   session_start();
   $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
   
