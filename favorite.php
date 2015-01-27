@@ -3,7 +3,7 @@
   if(!isset($_SESSION['user_id']) || !isset($_GET['sub'])){
     header('location:sub_list.php');
   }
-  $con = mysqli_connect("localhost", "root", "", "ksb");
+  $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
   $sub_id = mysqli_real_escape_string($con, $_GET['sub']);
   $user_id = $_SESSION['user_id'];
   //Check to see if the user already has it in their favorites, if so, unfavorite it.

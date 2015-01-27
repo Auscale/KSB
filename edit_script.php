@@ -2,7 +2,7 @@
   
   session_start();
   
-  $con = mysqli_connect("localhost", "root", "", "ksb");
+  $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
   
   if(!isset($_SESSION['user_id'])){
     header('location:sub_list.php');

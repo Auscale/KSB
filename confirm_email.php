@@ -4,7 +4,7 @@
     header('location:sub_list.php');
   }*/
   if(isset($_GET['token']) && isset($_GET['id'])){
-    $con = mysqli_connect("localhost", "root", "", "ksb");
+    $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
     $email_token = mysqli_real_escape_string($con, $_GET['token']);
     $user_id = mysqli_real_escape_string($con, $_GET['id']);
     //check token matches id in database

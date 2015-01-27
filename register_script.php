@@ -5,7 +5,7 @@
   if(!isset($_POST['username']) || isset($_SESSION['user_id'])){
     header('location:index.php');
   } else {
-    $con = mysqli_connect("localhost", "root", "", "ksb");
+    $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
     
     if(mysqli_connect_errno()){
       echo "Database connection failed: " . mysqli_connect_error();

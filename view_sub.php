@@ -4,7 +4,7 @@
   if(!isset($_GET['sub'])){
     header('location:sub_list.php');
   }
-  $con = mysqli_connect("localhost", "root", "", "ksb");
+  $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
   
   //get filename from GET ID
   $sub_id = mysqli_real_escape_string($con, $_GET['sub']);

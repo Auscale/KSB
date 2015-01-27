@@ -1,7 +1,7 @@
 <?php
   session_start();
   //establish connection
-  $con = mysqli_connect("localhost", "root", "", "ksb");
+  $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
   
   if(mysqli_connect_errno()){
     echo "Database connection failed: " . mysqli_connect_error();

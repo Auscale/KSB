@@ -7,7 +7,7 @@
     header('location:sign_in.php');
   }
   
-  $con = mysqli_connect("localhost", "root", "", "ksb");
+  $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
   
   if(!isset($_GET['sub'])){
     header('location:sub_list.php');

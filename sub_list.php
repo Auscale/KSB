@@ -5,7 +5,7 @@
   //Variables
   $load_subs = 5;
   
-  $con = mysqli_connect("localhost", "root", "", "ksb");
+  $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
   
   if(!isset($_GET['m'])){
     $_GET['m'] = 'a';

@@ -1,7 +1,7 @@
 <?php
   session_start();
   
-  $con = mysqli_connect("localhost", "root", "", "ksb");
+  $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
   
   if(isset($_SESSION['perm_post_news'])){
     $perm_post_news = $_SESSION['perm_post_news'];

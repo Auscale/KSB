@@ -7,7 +7,7 @@
     //if deleting
     if(isset($_GET['m']) && isset($_GET['news_id'])){
       if($_GET['m'] === 'delete'){
-        $con = mysqli_connect("localhost", "root", "", "ksb");
+        $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
         $news_id = mysqli_real_escape_string($con, $_GET['news_id']);
         $query = "delete from news where news_id='$news_id';";
         $result = mysqli_query($con, $query);
@@ -18,7 +18,7 @@
         header("location:news.php");
       }
     } else if(isset($_POST['news_title']) && isset($_POST['news_body'])){
-      $con = mysqli_connect("localhost", "root", "", "ksb");
+      $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
       $head = mysqli_real_escape_string($con, $_POST['news_title']);
       $body = mysqli_real_escape_string($con, $_POST['news_body']);
       $user_id = $_SESSION['user_id'];

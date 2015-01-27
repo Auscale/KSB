@@ -4,7 +4,7 @@
   $lr_size = 1000;
   $max_size = 20000000;
   session_start();
-  $con = mysqli_connect("localhost", "root", "", "ksb");
+  $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
   
   if(!isset($_SESSION['user_id'])){
     echo('You must be logged in to upload.');
