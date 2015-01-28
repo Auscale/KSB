@@ -234,7 +234,7 @@
           echo('
           <div id="image_sub"><img src="');
             if($lr_exists == 1){
-              echo('uploads/LR/' . $filename . '.png"');
+              echo('uploads/lr/' . $filename . '.png"');
             } else {
               echo('uploads/' . $filename . '.' . $extention . '"');
             }
