@@ -33,7 +33,7 @@
           }
           $row = mysqli_fetch_array($result);
           $sub_id = $row[0];
-          if(mysqli_num_rows($query_result) > 0){
+          if(mysqli_num_rows($result) > 0){
             echo("Hmm. I think that file already exists. Click <a href='view_sub.php?sub=$sub_id'>here</a> to view it.");
             die();
           }
