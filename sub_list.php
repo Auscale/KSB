@@ -477,7 +477,7 @@
                     $sub_box = '<div class="sub">
                                   <a class="sub_image_link" href="view_sub.php?sub=' . $row[0] . '">
                                     <div class="sub_box">
-                                      <img class="sub_thumb" src="uploads/thumbs/' . $row[5] . '.png" alt="Image Thumbnail">
+                                      <img class="sub_thumb" src="uploads/thumbs/' . $row[5] . '.jpg" alt="Image Thumbnail">
                                     </div>
                                   </a>';
                     $artist = 'Artist';

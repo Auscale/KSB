@@ -37,9 +37,9 @@
     unlink('../uploads/' . $filename . '.' . $extention);
     if ($type == 1){
       //image, so delete thumbs
-      unlink('../uploads/thumbs/' . $filename . '.png');
+      unlink('../uploads/thumbs/' . $filename . '.jpg');
       if($lr_exists == 1){
-        unlink('../uploads/lr/' . $filename . '.png');
+        unlink('../uploads/lr/' . $filename . '.jpg');
       }
     }
     //add delete audit table.
