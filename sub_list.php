@@ -159,6 +159,12 @@
       if(!$sub_result){
         die(mysqli_error($con));
       }
+      $count_query = "select count(*) from(select sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id join user_sub_fav usf on usf.sub_id = s.sub_id where usf.user_id='$user_id'$additional_where group by s.sub_id)res where res.positive >= $pos_tag_count and res.negative = 0;";
+      $count_result = mysqli_query($con, $count_query);
+      if(!$count_result){
+        die(mysqli_error($con));
+      }
+      $sub_count = mysqli_fetch_array($count_result)[0];
     } else if($mode === 'upl'){
       //searching uploads by tag
       $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id join sub s on s.sub_id = st.sub_id where exists(select 1 from(select s.sub_id, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id where 1=1$additional_where group by s.sub_id) res where res.positive >= $pos_tag_count and res.negative = 0 and res.sub_id = st.sub_id)and s.create_by='$user_id' group by t.name order by count(t.name) desc, t.name asc;";
@@ -171,6 +177,12 @@
       if(!$sub_result){
         die(mysqli_error($con));
       }
+      $count_query = "select count(*) from(select sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id where s.create_by='$user_id'$additional_where group by s.sub_id)res where res.positive >= $pos_tag_count and res.negative = 0;";
+      $count_result = mysqli_query($con, $count_query);
+      if(!$count_result){
+        die(mysqli_error($con));
+      }
+      $sub_count = mysqli_fetch_array($count_result)[0];
     } else {
       //searching all by tag
       $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id where exists(select 1 from(select s.sub_id, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id where 1=1$additional_where group by s.sub_id) res where res.positive >= $pos_tag_count and res.negative = 0 and res.sub_id = st.sub_id) group by t.name order by count(t.name) desc, t.name asc;";
@@ -178,11 +190,17 @@
       if(!$tag_result){
         die(mysqli_error($con));
       }
-      $sub_query = "select res.sub_id, res.type, res.title, res.score, res.rating, res.filename from(select s.sub_id, s.type, s.title, s.score, s.rating, s.filename, s.create_date, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t	on t.tag_id = st.tag_id where 1=1$additional_where group by s.sub_id)res where res.positive >= $pos_tag_count and res.negative = 0 order by res.$ordering limit $pag_from, $load_subs;";
+      $sub_query = "select res.sub_id, res.type, res.title, res.score, res.rating, res.filename from(select s.sub_id, s.type, s.title, s.score, s.rating, s.filename, s.create_date, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id where 1=1$additional_where group by s.sub_id)res where res.positive >= $pos_tag_count and res.negative = 0 order by res.$ordering limit $pag_from, $load_subs;";
       $sub_result = mysqli_query($con, $sub_query);
       if(!$sub_result){
         die(mysqli_error($con));
       }
+      $count_query = "select count(*) from(select sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id where 1=1$additional_where group by s.sub_id)res where res.positive >= $pos_tag_count and res.negative = 0;";
+      $count_result = mysqli_query($con, $count_query);
+      if(!$count_result){
+        die(mysqli_error($con));
+      }
+      $sub_count = mysqli_fetch_array($count_result)[0];
     }
   } else {
     if($mode === 'fav'){
@@ -201,6 +219,12 @@
       if(!$sub_result){
         die(mysqli_error($con));
       }
+      $count_query = "select count(*) from user_sub_fav where user_id='$user_id';";
+      $count_result = mysqli_query($con, $count_query);
+      if(!$count_result){
+        die(mysqli_error($con));
+      }
+      $sub_count = mysqli_fetch_array($count_result)[0];
     } else if($mode === 'upl'){
       //all uploads by user
       $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id where create_by='$user_id' group by st.tag_id order by count(st.tag_id) desc;";
@@ -213,6 +237,12 @@
       if(!$sub_result){
         die(mysqli_error($con));
       }
+      $count_query = "select count(*) from sub where create_by='$user_id';";
+      $count_result = mysqli_query($con, $count_query);
+      if(!$count_result){
+        die(mysqli_error($con));
+      }
+      $sub_count = mysqli_fetch_array($count_result)[0];
     } else {
       //all posts
       $tag_query ="select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id group by st.tag_id order by count(st.tag_id) desc;";
@@ -225,6 +255,12 @@
       if(!$sub_result){
         die(mysqli_error($con));
       }
+      $count_query = "select count(*) from sub;";
+      $count_result = mysqli_query($con, $count_query);
+      if(!$count_result){
+        die(mysqli_error($con));
+      }
+      $sub_count = mysqli_fetch_array($count_result)[0];
     }
   }
 ?>
@@ -459,35 +495,32 @@
           <div id="pag_cont">
             <ul class="pag">
               <?php
-              //get count for pagination
-                $query = "select count(*) from sub;";
-                $result = mysqli_query($con, $query);
-                if(!$result){
-                  die(mysqli_error($con));
+                function build_params($page, $offset){
+                  $params = array_merge($_GET, array("page" => ($page + $offset)));
+                  $new_query_string = http_build_query($params);
+                  return $new_query_string;
                 }
-                $row = mysqli_fetch_array($result);
-                $sub_count = $row[0];
                 $max_page = $sub_count/$load_subs + 1;
                 $max_page = floor($max_page);
                 //pagination. Will always show current.
                 if ($page-3 >= 1){
-                  echo('<li><a href="sub_list.php?page=1">First</a></li>');
+                  echo('<li><a href="sub_list.php?' . build_params(1, 0) . '">First</a></li>');
                 }
                 if($page-2 >= 1){
-                  echo('<li><a href="sub_list.php?page='); echo($page-2); echo('">'); echo($page-2); echo('</a></li>');
+                  echo('<li><a href="sub_list.php?' . build_params($page, -2) . '">'); echo($page-2); echo('</a></li>');
                 }
                 if($page-1 >= 1){
-                  echo('<li><a href="sub_list.php?page='); echo($page-1); echo('">'); echo($page-1); echo('</a></li>');
+                  echo('<li><a href="sub_list.php?' . build_params($page, -1) . '">'); echo($page-1); echo('</a></li>');
                 }
                 echo('<li><a href="#" id="pag_cur">' . $page . '</a></li>');
                 if($page+1 <= $max_page){
-                  echo('<li><a href="sub_list.php?page='); echo($page+1); echo('">'); echo($page+1); echo('</a></li>');
+                  echo('<li><a href="sub_list.php?' . build_params($page, 1) . '">'); echo($page+1); echo('</a></li>');
                 }
                 if($page+2 <= $max_page){
-                  echo('<li><a href="sub_list.php?page='); echo($page+2); echo('">'); echo($page+2); echo('</a></li>');
+                  echo('<li><a href="sub_list.php?' . build_params($page, 2) . '">'); echo($page+2); echo('</a></li>');
                 }
                 if($page+3 <= $max_page){
-                  echo('<li><a href="sub_list.php?page=' . $max_page . '">Last</a></li>');
+                  echo('<li><a href="sub_list.php?' . build_params($max_page, 0) . '">Last</a></li>');
                 }
               ?>
             </ul>
