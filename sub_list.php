@@ -27,7 +27,7 @@
     echo "Database connection failed: " . mysqli_connect_error();
   }
   if(isset($_GET['tags'])){
-    $get_tag_string = trim(mysqli_real_escape_string($con, $_GET['tags']));
+    $get_tag_string = strtolower(trim(mysqli_real_escape_string($con, $_GET['tags'])));
     if($get_tag_string === ''){
       $tag_search = 0;
     } else {
@@ -85,6 +85,7 @@
           }
         } else {
           //incorrect 2nd part of tag
+          $additional_where = " and 1=2";
         }
       } else if(substr($tag_str, 0, $special_tag_pos) == "order"){
         //get what we're ordering by

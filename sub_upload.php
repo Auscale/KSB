@@ -120,7 +120,7 @@
         $sub_id = mysqli_insert_id($con);
         //parse tags
         if(isset($_POST['sub_tags'])){
-          $tag_string = mysqli_real_escape_string($con, $_POST['sub_tags']);
+          $tag_string = strtolower(mysqli_real_escape_string($con, $_POST['sub_tags']));
           if($tag_string === ''){
             $tag_string = "tag_me";
           }

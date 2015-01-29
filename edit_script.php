@@ -25,7 +25,7 @@
   $rating     = mysqli_real_escape_string($con, $_POST['rating']);
   $tag_string = mysqli_real_escape_string($con, $_POST['sub_tags']);
   $source     = mysqli_real_escape_string($con, $_POST['sub_source']);
-  $tag_string = trim($tag_string);
+  $tag_string = strtolower(trim($tag_string));
   $user_id    = mysqli_real_escape_string($con, $_SESSION['user_id']);
   $sub_type   = mysqli_real_escape_string($con, $_SESSION['sub_type']);
   $mysql_time = date("Y-m-d H:i:s", time());
