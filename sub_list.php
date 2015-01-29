@@ -206,7 +206,7 @@
   } else {
     if($mode === 'fav'){
       //all favorites by user
-      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id join user_sub_fav usf on usf.sub_id = st.sub_id where usf.user_id='$user_id' group by st.tag_id order by count(st.tag_id) desc;";
+      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id join user_sub_fav usf on usf.sub_id = st.sub_id where usf.user_id='$user_id' group by st.tag_id order by count(st.tag_id) desc, t.name asc;";
       $tag_result = mysqli_query($con, $tag_query);
       if(!$tag_result){
         die(mysqli_error($con));
@@ -228,7 +228,7 @@
       $sub_count = mysqli_fetch_array($count_result)[0];
     } else if($mode === 'upl'){
       //all uploads by user
-      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id where create_by='$user_id' group by st.tag_id order by count(st.tag_id) desc;";
+      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id join sub s on s.sub_id = st.sub_id where s.create_by='$user_id' group by st.tag_id order by count(st.tag_id) desc, t.name asc;";
       $tag_result = mysqli_query($con, $tag_query);
       if(!$tag_result){
         die(mysqli_error($con));
@@ -323,8 +323,8 @@
         <li><a href="news.php">News</a></li>
       </ul>
       <div id="navbar_search">
-        <form>
-          <input type="text" id="navbar_search_box" placeholder="Search...">
+        <form id="search" method="GET" action="sub_list.php">
+          <input type="text" id="navbar_search_box" name="tags" <?php echo('value="' . stripslashes($get_tag_string) . '"'); ?> placeholder="Search...">
         </form>
       </div>
       <div id="navbar_user">
@@ -339,11 +339,11 @@
               <a href="sub_list.php?m=upl&user=' . $user_id . '">My Uploads</a>
               <a href="mod_cp.php">Mod CP</a>
               <a href="admin_cp.php">Admin CP</a>
-              <a href="sign_out.php">Sign Out</a>
+              <a href="scripts/sign_out.php">Sign Out</a>
             </div>');
           } else {
             echo('
-            <form id="nav_login_form" method="post" action="sign_in_script.php">
+            <form id="nav_login_form" method="post" action="scripts/sign_in_script.php">
               <input class="nav_form_text" type="text" name="username" placeholder="Username">
               <input class="nav_form_text" type="password" name="password" placeholder="Password">
               <div id="form_buttons">
@@ -427,10 +427,14 @@
           </div>
         </div>
         <div id="main">
+          <div id="news_bar">
+            <span class="news_bar_title">Breaking News:</span>
+            <span class="news_bar_body">This just in! There's a thing that everyone needs to know about, and it's so important that we had to put it at the top of this page! Click <a href="#">here</a> for more information!</span><i class="fa fa-close" id="news_bar_close"></i>
+          </div>
           <div id="subs">
             <?php
               if (mysqli_num_rows($sub_result) == 0){
-                echo("Nuthin here.");  
+                echo('<div class="message_box">No Posts Found</div>');  
               } else {
                 while ($row = mysqli_fetch_array($sub_result)){
                   //fav count
@@ -501,8 +505,8 @@
                   $new_query_string = http_build_query($params);
                   return $new_query_string;
                 }
-                $max_page = $sub_count/$load_subs + 1;
-                $max_page = floor($max_page);
+                $max_page = $sub_count/$load_subs;
+                $max_page = ceil($max_page);
                 //pagination. Will always show current.
                 if ($page-3 >= 1){
                   echo('<li><a href="sub_list.php?' . build_params(1, 0) . '">First</a></li>');

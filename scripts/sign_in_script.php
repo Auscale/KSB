@@ -31,7 +31,7 @@
       //temp permissions
       $_SESSION['perm_post_news'] = 1;
       $_SESSION['perm_delete_sub'] = 1;
-      header("location:sub_list.php");
+      header("location:/sub_list.php");
     } else {
       echo("Invalid Username or Password");
     }

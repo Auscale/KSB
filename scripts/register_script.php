@@ -3,7 +3,7 @@
   session_start();
 
   if(!isset($_POST['username']) || isset($_SESSION['user_id'])){
-    header('location:index.php');
+    header('location:/index.php');
   } else {
     $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
     
@@ -37,10 +37,10 @@
         //log user in afterwards?
         //  $_SESSION['username'] = $username;
         //  $_SESSION['user_id'] = mysqli_insert_id($con);
-        //  header("location:sub_list.php");
+        //  header("location:/sub_list.php");
         //prompt user to sign in - saves having to make changes to log in settings in two places.
         //send user an email and prevent sign on until activated? or email optional?
-        header("location:sign_in.php");
+        header("location:/sign_in.php");
       } else {
         echo("Username already exists.");
       }

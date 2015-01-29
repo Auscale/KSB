@@ -86,6 +86,12 @@ $("#sub_type_image").click(
   }
 );
 
+$("#news_bar_close").click(
+  function(){
+    $("#news_bar").hide();
+  }
+);
+
 $(".forum_category_collapse").each(function(){
   $(this).click(function(){
     if ($(this).closest("tbody").next("tbody").is(":visible")){
@@ -130,6 +136,6 @@ $(window).resize(function(){
 
 function deleteSub(sub_id){
   if(confirm("Are you sure you wish to delete this post?") === true){
-    window.location.href = "delete_sub.php?sub=" + sub_id;
+    window.location.href = "./scripts/delete_sub.php?sub=" + sub_id;
   }
 }

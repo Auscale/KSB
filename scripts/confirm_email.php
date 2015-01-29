@@ -1,7 +1,7 @@
 <?php
   session_start();
   /*if(isset($_SESSION['user_id'])){
-    header('location:sub_list.php');
+    header('location:/sub_list.php');
   }*/
   if(isset($_GET['token']) && isset($_GET['id'])){
     $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
@@ -22,14 +22,14 @@
         die(mysqli_error($con));
       }
       $_SESSION['message'] = "Email confirmed. Thanks!";
-      header('location:sub_list.php');
+      header('location:/sub_list.php');
     } else {
       //no dice
       $_SESSION['message'] = "There was an error confirming your email address. Please try again.";
-      header('location:sub_list.php');
+      header('location:/sub_list.php');
     }
     mysqli_close($con);
   } else {
-    header('location:sub_list.php');
+    header('location:/sub_list.php');
   }
 ?>

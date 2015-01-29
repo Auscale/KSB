@@ -46,6 +46,26 @@ table span{
   color: red;
 }
 
+#news_bar{
+  border-bottom:3px solid #990000;
+  position:relative;
+  padding-right:15px;
+}
+
+.news_bar_title{
+  font-weight:bold;
+}
+
+#news_bar_close{
+  position:absolute;
+  top:0;
+  right:0;
+}
+
+.message_box{
+  text-align:initial;
+}
+
 .forum_forum{
   width:95%;
   margin:20px auto 0 auto;

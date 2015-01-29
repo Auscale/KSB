@@ -4,12 +4,8 @@
   
   $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
   
-  if(!isset($_SESSION['user_id'])){
-    header('location:sub_list.php');
-  }
-  
-  if(!isset($_POST['sub_id'])){
-    header('location:sub_list.php');
+  if(!isset($_SESSION['user_id']) || !isset($_POST['sub_id'])){
+    header('location:/sub_list.php');
   }
   
   if(isset($_POST['story_upload'])){
@@ -106,6 +102,6 @@
   
   mysqli_close($con);
   
-  header('location:view_sub.php?sub=' . $sub_id);
+  header('location:/view_sub.php?sub=' . $sub_id);
   //todo: add audit table to track changes
 ?>

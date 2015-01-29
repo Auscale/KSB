@@ -122,11 +122,11 @@
               <a href="sub_list.php?m=upl&user=' . $user_id . '">My Uploads</a>
               <a href="mod_cp.php">Mod CP</a>
               <a href="admin_cp.php">Admin CP</a>
-              <a href="sign_out.php">Sign Out</a>
+              <a href="scripts/sign_out.php">Sign Out</a>
             </div>');
           } else {
             echo('
-            <form id="nav_login_form" method="post" action="sign_in_script.php">
+            <form id="nav_login_form" method="post" action="scripts/sign_in_script.php">
               <input class="nav_form_text" type="text" name="username" placeholder="Username">
               <input class="nav_form_text" type="password" name="password" placeholder="Password">
               <div id="form_buttons">
@@ -202,7 +202,7 @@
             <ul id="sub_controls">
               <li><a id="cozy_mode" href="javascript:void(0)">Cozy Mode</a></li>');
           if(isset($_SESSION['user_id'])){
-            echo('<li><a href="favorite.php?sub=' . $sub_id . '">');
+            echo('<li><a href="scripts/favorite.php?sub=' . $sub_id . '">');
             //check favorite status
             $query = "select * from user_sub_fav where sub_id='$sub_id' and user_id='$user_id';";
             $result = mysqli_query($con, $query);
@@ -242,7 +242,7 @@
               <li><a href="uploads/' . $filename . '.' . $extention . '">Full Size</a></li>
               ');
           if(isset($_SESSION['user_id'])){
-            echo('<li><a href="favorite.php?sub=' . $sub_id . '">');
+            echo('<li><a href="scripts/favorite.php?sub=' . $sub_id . '">');
             //check favorite status
             $query = "select * from user_sub_fav where sub_id='$sub_id' and user_id='$user_id';";
             $result = mysqli_query($con, $query);

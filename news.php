@@ -36,11 +36,6 @@
           </a>
         </li>
         <li>
-          <a id="search_link" href="javascript:void(0)">
-            <i id="search_icon" class="fa fa-search navbar_left"></i>
-          </a>
-        </li>
-        <li>
           <a id="user_link" href="javascript:void(0)">
             <i id="user_icon" class="fa fa-user fa-lg navbar_right"></i>
           </a>
@@ -52,11 +47,6 @@
         <li><a href="forum.php">Forum</a></li>
         <li><a href="news.php">News</a></li>
       </ul>
-      <div id="navbar_search">
-        <form>
-          <input type="text" id="navbar_search_box" placeholder="Search...">
-        </form>
-      </div>
       <div id="navbar_user">
       
         <?php
@@ -69,11 +59,11 @@
               <a href="upload_list.php?user=' . $user_id . '">My Uploads</a>
               <a href="mod_cp.php">Mod CP</a>
               <a href="admin_cp.php">Admin CP</a>
-              <a href="sign_out.php">Sign Out</a>
+              <a href="scripts/sign_out.php">Sign Out</a>
             </div>');
           } else {
             echo('
-            <form id="nav_login_form" method="post" action="sign_in_script.php">
+            <form id="nav_login_form" method="post" action="scripts/sign_in_script.php">
               <input class="nav_form_text" type="text" name="username" placeholder="Username">
               <input class="nav_form_text" type="password" name="password" placeholder="Password">
               <div id="form_buttons">
@@ -100,6 +90,7 @@
         ?></li>
       </ul>
       <div id="page">
+      <a href="post_news.php">Post News</a>
       <?php
         $query = "select n.head, n.body, n.create_by, u.username, n.create_date, n.news_id from news n join user u on u.user_id = n.create_by order by n.create_date desc;";
         $result = mysqli_query($con, $query);
@@ -114,7 +105,7 @@
                   <span>' . $row[0] . '</span>
                   <span class="news_details">Posted by: <a class="header_link" href="view_user.php?user=' . $row[2] . '">' . $row[3] . '</a>');
                   if($perm_post_news === 1){
-                    echo('<a class="header_link" href="post_news_script.php?m=delete&news_id=' . $row[5] . '">Delete</a></span>');
+                    echo('<a class="header_link" href="scripts/post_news_script.php?m=delete&news_id=' . $row[5] . '">Delete</a></span>');
                   }
                   echo('</span><span class="news_date news_details">' . $row[4] . '</span>
                 </div>
@@ -133,3 +124,7 @@
     <script src="js/ksb.js"></script>
   </body>
 </html>
+<?php
+  mysqli_close($con);
+  unset($_SESSION['message']);
+?>

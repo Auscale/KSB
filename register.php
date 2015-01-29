@@ -29,11 +29,6 @@
           </a>
         </li>
         <li>
-          <a id="search_link" href="javascript:void(0)">
-            <i id="search_icon" class="fa fa-search navbar_left"></i>
-          </a>
-        </li>
-        <li>
           <a id="user_link" href="javascript:void(0)">
             <i id="user_icon" class="fa fa-user fa-lg navbar_right"></i>
           </a>
@@ -45,22 +40,12 @@
         <li><a href="forum.php">Forum</a></li>
         <li><a href="news.php">News</a></li>
       </ul>
-      <div id="navbar_search">
-        <form>
-          <input type="text" id="navbar_search_box" placeholder="Search...">
-        </form>
-      </div>
       <ul id="navbar_menu">
         <li><a href="sub_list.php">Posts</a></li>
         <li><a href="submit.php">Submit</a></li>
         <li><a href="forum.php">Forum</a></li>
         <li><a href="news.php">News</a></li>
       </ul>
-      <div id="navbar_search">
-        <form>
-          <input type="text" id="navbar_search_box" placeholder="Search...">
-        </form>
-      </div>
       <div id="navbar_user">
       
         <?php
@@ -73,11 +58,11 @@
               <a href="upload_list.php?user=' . $user_id . '">My Uploads</a>
               <a href="mod_cp.php">Mod CP</a>
               <a href="admin_cp.php">Admin CP</a>
-              <a href="sign_out.php">Sign Out</a>
+              <a href="scripts/sign_out.php">Sign Out</a>
             </div>');
           } else {
             echo('
-            <form id="nav_login_form" method="post" action="sign_in_script.php">
+            <form id="nav_login_form" method="post" action="scripts/scripts/sign_in_script.php">
               <input class="nav_form_text" type="text" name="username" placeholder="Username">
               <input class="nav_form_text" type="password" name="password" placeholder="Password">
               <div id="form_buttons">
@@ -105,7 +90,7 @@
       </ul>
       <div id="page">
         <div id="form_wrap">
-          <form id="register_form" method="post" action="register_script.php">
+          <form id="register_form" method="post" action="scripts/register_script.php">
             <label for="reg_username">Username:</label>
             <input type="text" id="reg_username" name="username" required autofocus>
             <label for="reg_email">Email Address:</label>

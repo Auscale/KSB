@@ -15,7 +15,7 @@
           die(mysqli_error($con));
         }
         $_SESSION['message'] = "News deleted.";
-        header("location:news.php");
+        header("location:/news.php");
       }
     } else if(isset($_POST['news_title']) && isset($_POST['news_body'])){
       $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
@@ -28,20 +28,20 @@
       if(!$result){
         die(mysqli_error($con));
       } else {
-        header("location:news.php");
+        header("location:/news.php");
       }
     } else {
       $_SESSION['message'] = "Please enter both a title and body text.";
-      header("location:post_news.php");
+      header("location:/post_news.php");
     }
   } else {
     //not logged on or no permissions
     if(!isset($_SESSION['user_id'])){
       $_SESSION['message'] = "You must be signed in to post news.";
-      header("location:sign_in.php");
+      header("location:/sign_in.php");
     } else {
       $_SESSION['message'] = "You do not have permission to post news.";
-      header("location:sub_list.php");
+      header("location:/sub_list.php");
     }
   }
   

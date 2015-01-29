@@ -34,17 +34,17 @@
       die(mysqli_error($con));
     }
     //remove local file and any LR or thumbs that may or may not be present
-    unlink('uploads/' . $filename . '.' . $extention);
+    unlink('../uploads/' . $filename . '.' . $extention);
     if ($type == 1){
       //image, so delete thumbs
-      unlink('uploads/thumbs/' . $filename . '.png');
+      unlink('../uploads/thumbs/' . $filename . '.png');
       if($lr_exists == 1){
-        unlink('uploads/lr/' . $filename . '.png');
+        unlink('../uploads/lr/' . $filename . '.png');
       }
     }
     //add delete audit table.
     $_SESSION['message'] = "Post deleted successfully.";
-    header("location:sub_list.php");
+    header("location:/sub_list.php");
   }
   
 ?>

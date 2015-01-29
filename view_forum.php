@@ -53,11 +53,6 @@
         <li><a href="forum.php">Forum</a></li>
         <li><a href="news.php">News</a></li>
       </ul>
-      <div id="navbar_search">
-        <form>
-          <input type="text" id="navbar_search_box" placeholder="Search...">
-        </form>
-      </div>
       <div id="navbar_user">
       
         <?php
@@ -70,11 +65,11 @@
               <a href="upload_list.php?user=' . $user_id . '">My Uploads</a>
               <a href="mod_cp.php">Mod CP</a>
               <a href="admin_cp.php">Admin CP</a>
-              <a href="sign_out.php">Sign Out</a>
+              <a href="scripts/sign_out.php">Sign Out</a>
             </div>');
           } else {
             echo('
-            <form id="nav_login_form" method="post" action="sign_in_script.php">
+            <form id="nav_login_form" method="post" action="scripts/sign_in_script.php">
               <input class="nav_form_text" type="text" name="username" placeholder="Username">
               <input class="nav_form_text" type="password" name="password" placeholder="Password">
               <div id="form_buttons">

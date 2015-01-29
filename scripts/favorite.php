@@ -1,7 +1,7 @@
 <?php
   session_start();
   if(!isset($_SESSION['user_id']) || !isset($_GET['sub'])){
-    header('location:sub_list.php');
+    header('location:/sub_list.php');
   }
   $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
   $sub_id = mysqli_real_escape_string($con, $_GET['sub']);
@@ -21,7 +21,7 @@
     if(!$result){
       die(mysqli_error($con));
     } else {
-      header("location:sub_list.php?m=fav&user=$user_id");
+      header("location:/sub_list.php?m=fav&user=$user_id");
     }
   } else {
     //add to favorites
@@ -31,7 +31,7 @@
     if(!$result){
       die(mysqli_error($con));
     } else {
-      header("location:sub_list.php?m=fav&user=$user_id");
+      header("location:/sub_list.php?m=fav&user=$user_id");
     }
   }
   mysqli_close($con);

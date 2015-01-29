@@ -23,7 +23,7 @@
           $filesize = strlen($got_image);
           $image_extention = exif_imagetype($url);
           $image_extention = image_type_to_extension($image_extention, false);
-          $full_name = "uploads/" . $file_name . '.' . $image_extention;
+          $full_name = "../uploads/" . $file_name . '.' . $image_extention;
           //check to make sure not duplicate image
           $file_hash = sha1_file($url);
           $query = 'select sub_id from sub where hash="' . $file_hash . '";';
@@ -34,13 +34,13 @@
           $row = mysqli_fetch_array($result);
           $sub_id = $row[0];
           if(mysqli_num_rows($result) > 0){
-            echo("Hmm. I think that file already exists. Click <a href='view_sub.php?sub=$sub_id'>here</a> to view it.");
+            echo("Hmm. I think that file already exists. Click <a href='/view_sub.php?sub=$sub_id'>here</a> to view it.");
             die();
           }
           //check image size to verify it's an image
           $image_resolution = getimagesize($url);
           if($image_resolution == 0){
-            echo("Whoops. That doesn't look like an image to me... Maybe it's corrupt? Or maybe you're just being silly. Either way, something went wrong.");
+            echo("Failed to get resolution of image. Upload failed.");
             die();
           }
           //if file is too big...
@@ -50,7 +50,7 @@
           }
           file_put_contents($full_name, $got_image);
         } else {
-          $target_dir = "uploads/";
+          $target_dir = "../uploads/";
           $sub_title = mysqli_real_escape_string($con, $_POST['sub_title']);
           $sub_description = mysqli_real_escape_string($con, $_POST['sub_description']);
           if($_POST['rating'] == 0 || $_POST['rating'] == 1 || $_POST['rating'] == 2){
@@ -77,11 +77,11 @@
           $image_resolution = getimagesize($_FILES['file_upload']['tmp_name']);
           if($image_resolution == 0){
             $uploadOk = 0;
-            echo("Whoops. That doesn't look like an image to me... Maybe it's corrupt? Or maybe you're just being silly. Either way, something went wrong.");
+            echo("Failed to get resolution of image. Upload failed.");
             die();
           }
           if(mysqli_num_rows($query_result) > 0){
-            echo("Hmm. I think that file already exists. Click <a href='view_sub.php?sub=$sub_id'>here</a> to view it.");
+            echo("Hmm. I think that file already exists. Click <a href='/view_sub.php?sub=$sub_id'>here</a> to view it.");
             die();
           }
           // Check file size
@@ -126,7 +126,7 @@
           }
           $tag_array = explode(" ", $tag_string);
         } else {
-          header("location:sub_list.php");
+          header("location:/sub_list.php");
           die();
         }
         //remove duplicate tags
@@ -204,20 +204,20 @@
           return true;
         }
         //create thumbnail
-        $result = create_thumb(120, $full_name, "uploads/thumbs/" . $file_name);
+        $result = create_thumb(120, $full_name, "../uploads/thumbs/" . $file_name);
         if(!$result){
           echo("Failed to create thumbnail...");
         } else {
           //create low res only if lr exists
           if($lr_exists === 1){
-            $result = create_thumb($lr_size, $full_name, "uploads/lr/" . $file_name);
+            $result = create_thumb($lr_size, $full_name, "../uploads/lr/" . $file_name);
           }
           if(!$result){
             echo("Failed to create low-res version...");
             die();
           } else {
             //redirect to their shiny new upload
-            header('location:view_sub.php?sub=' . $sub_id);
+            header('location:/view_sub.php?sub=' . $sub_id);
           }
         }
       }else if($_POST['sub_type'] == 'story'){
@@ -226,7 +226,7 @@
         $sub_title = mysqli_real_escape_string($con,$_POST['sub_title']);
         if($sub_title == ""){
           $_SESSION['message'] = "You must specify a title for a story.";
-          header("location:submit.php");
+          header("location:/submit.php");
           echo("Something went wrong");
           die();
         }
@@ -244,7 +244,7 @@
           die(mysqli_error($con));
         } else {
           //create file on server
-          file_put_contents("uploads/" . $file_name . '.' . $text_extention, $story_content);
+          file_put_contents("../uploads/" . $file_name . '.' . $text_extention, $story_content);
           $sub_id = mysqli_insert_id($con);
           //create and insert tags
           //parse tags
@@ -282,7 +282,7 @@
             }
           }
           unset($value);
-          header("location:view_sub.php?sub=$sub_id");
+          header("location:/view_sub.php?sub=$sub_id");
         }
       }
     }
