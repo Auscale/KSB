@@ -13,10 +13,10 @@
  * (1) http://ckeditor.com/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) http://ckeditor.com/builder/4c63178d1628059c0e005a820c2d4f47
+ * (2) http://ckeditor.com/builder/a24c5e31ba9228c666dfafe01a8c7dca
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) http://ckeditor.com/builder/download/4c63178d1628059c0e005a820c2d4f47
+ * (3) http://ckeditor.com/builder/download/a24c5e31ba9228c666dfafe01a8c7dca
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -26,7 +26,7 @@
 
 var CKBUILDER_CONFIG = {
 	skin: 'moono-dark',
-	preset: 'basic',
+	preset: 'standard',
 	ignore: [
 		'.bender',
 		'bender.js',
@@ -34,6 +34,7 @@ var CKBUILDER_CONFIG = {
 		'bender-out.log',
 		'dev',
 		'.DS_Store',
+		'.editorconfig',
 		'.gitattributes',
 		'.gitignore',
 		'gruntfile.js',
@@ -49,12 +50,21 @@ var CKBUILDER_CONFIG = {
 	],
 	plugins : {
 		'basicstyles' : 1,
+		'blockquote' : 1,
 		'clipboard' : 1,
 		'enterkey' : 1,
 		'entities' : 1,
 		'floatingspace' : 1,
+		'format' : 1,
+		'horizontalrule' : 1,
 		'indentlist' : 1,
 		'list' : 1,
+		'maximize' : 1,
+		'pastefromword' : 1,
+		'pastetext' : 1,
+		'removeformat' : 1,
+		'resize' : 1,
+		'scayt' : 1,
 		'toolbar' : 1,
 		'undo' : 1,
 		'wysiwygarea' : 1

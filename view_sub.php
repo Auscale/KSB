@@ -68,6 +68,7 @@
     </title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <script src="ckeditor/ckeditor.js"></script>
   </head>
   <body class="preload">
     <div id="wrapper">
@@ -272,7 +273,7 @@
             if(isset($_SESSION['user_id'])){
               echo('
                 <form id="submit_comment">
-                  <textarea id="comment_textarea"></textarea>
+                  <textarea id="comment_textarea" class="ckeditor"></textarea>
                   <input type="submit" value="Submit" id="comment_submit">
                 </form>
           ');

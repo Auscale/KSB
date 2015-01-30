@@ -320,6 +320,10 @@ table span{
   height:150px;
 }
 
+#submit_comment{
+  max-width:750px;
+}
+
 #comment_submit{
   display:block;
   margin-bottom:10px;
