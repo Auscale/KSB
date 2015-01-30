@@ -31,9 +31,9 @@
   $score = $row[5];
   if($row[6]==0){
     $rating = "S";
-  }else if($row[5]==1){
+  }else if($row[6]==1){
     $rating = "M";
-  }else if($row[5]==2){
+  }else if($row[6]==2){
     $rating = "E";
   }else{
     $rating = $row[5];
