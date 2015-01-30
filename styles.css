@@ -491,6 +491,7 @@ table span{
 .sub_box_story{
   height:120px;
   width:120px;
+  border:1px solid black;
 }
 
 .sub_box{
