@@ -7,7 +7,8 @@
     die();
   }
   //Variables
-  $load_subs = 5;
+  $load_subs = 20;
+  $load_tags = 20;
   
   $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
   
@@ -154,7 +155,7 @@
   if($tag_search === 1){
     if($mode === 'fav'){
       //searching favorites by tag
-      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id join sub s on s.sub_id = st.sub_id where exists(select 1 from(select s.sub_id, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id join user_sub_fav usf on usf.sub_id = s.sub_id where usf.user_id='$user_id'$additional_where group by s.sub_id) res where res.positive >= $pos_tag_count and res.negative = 0 and res.sub_id = st.sub_id) group by t.name order by count(t.name) desc, t.name asc;";
+      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id join sub s on s.sub_id = st.sub_id where exists(select 1 from(select s.sub_id, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id join user_sub_fav usf on usf.sub_id = s.sub_id where usf.user_id='$user_id'$additional_where group by s.sub_id) res where res.positive >= $pos_tag_count and res.negative = 0 and res.sub_id = st.sub_id) group by t.name order by count(t.name) desc, t.name asc limit 0, $load_tags;";
       $tag_result = mysqli_query($con, $tag_query);
       if(!$tag_result){
         die(mysqli_error($con));
@@ -172,7 +173,7 @@
       $sub_count = mysqli_fetch_array($count_result)[0];
     } else if($mode === 'upl'){
       //searching uploads by tag
-      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id join sub s on s.sub_id = st.sub_id where exists(select 1 from(select s.sub_id, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id where 1=1$additional_where group by s.sub_id) res where res.positive >= $pos_tag_count and res.negative = 0 and res.sub_id = st.sub_id)and s.create_by='$user_id' group by t.name order by count(t.name) desc, t.name asc;";
+      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id join sub s on s.sub_id = st.sub_id where exists(select 1 from(select s.sub_id, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id where 1=1$additional_where group by s.sub_id) res where res.positive >= $pos_tag_count and res.negative = 0 and res.sub_id = st.sub_id)and s.create_by='$user_id' group by t.name order by count(t.name) desc, t.name asc limit 0, $load_tags;";
       $tag_result = mysqli_query($con, $tag_query);
       if(!$tag_result){
         die(mysqli_error($con));
@@ -190,7 +191,7 @@
       $sub_count = mysqli_fetch_array($count_result)[0];
     } else {
       //searching all by tag
-      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id where exists(select 1 from(select s.sub_id, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id where 1=1$additional_where group by s.sub_id) res where res.positive >= $pos_tag_count and res.negative = 0 and res.sub_id = st.sub_id) group by t.name order by count(t.name) desc, t.name asc;";
+      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id where exists(select 1 from(select s.sub_id, sum(case when t.name in ($pos_tag) then 1 else 0 end) positive, sum(case when t.name in ($neg_tag) then 1 else 0 end) negative from sub_tag st join sub s on s.sub_id = st.sub_id join tag t on t.tag_id = st.tag_id where 1=1$additional_where group by s.sub_id) res where res.positive >= $pos_tag_count and res.negative = 0 and res.sub_id = st.sub_id) group by t.name order by count(t.name) desc, t.name asc limit 0, $load_tags;";
       $tag_result = mysqli_query($con, $tag_query);
       if(!$tag_result){
         die(mysqli_error($con));
@@ -210,7 +211,7 @@
   } else {
     if($mode === 'fav'){
       //all favorites by user
-      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id join user_sub_fav usf on usf.sub_id = st.sub_id where usf.user_id='$user_id' group by st.tag_id order by count(st.tag_id) desc, t.name asc;";
+      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id join user_sub_fav usf on usf.sub_id = st.sub_id where usf.user_id='$user_id' group by st.tag_id order by count(st.tag_id) desc, t.name asc limit 0, $load_tags;";
       $tag_result = mysqli_query($con, $tag_query);
       if(!$tag_result){
         die(mysqli_error($con));
@@ -232,7 +233,7 @@
       $sub_count = mysqli_fetch_array($count_result)[0];
     } else if($mode === 'upl'){
       //all uploads by user
-      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id join sub s on s.sub_id = st.sub_id where s.create_by='$user_id' group by st.tag_id order by count(st.tag_id) desc, t.name asc;";
+      $tag_query = "select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id join sub s on s.sub_id = st.sub_id where s.create_by='$user_id' group by st.tag_id order by count(st.tag_id) desc, t.name asc limit 0, $load_tags;";
       $tag_result = mysqli_query($con, $tag_query);
       if(!$tag_result){
         die(mysqli_error($con));
@@ -250,7 +251,7 @@
       $sub_count = mysqli_fetch_array($count_result)[0];
     } else {
       //all posts
-      $tag_query ="select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id group by st.tag_id order by count(st.tag_id) desc;";
+      $tag_query ="select t.name, st.tag_id, count(st.tag_id) from sub_tag st join tag t on t.tag_id = st.tag_id group by st.tag_id order by count(st.tag_id) desc, t.name asc limit 0, $load_tags;";
       $tag_result = mysqli_query($con, $tag_query);
       if(!$tag_result){
         die(mysqli_error($con));
