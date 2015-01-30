@@ -1,11 +1,11 @@
 <?php
   //tags are still a little wonky. revisit later.
   //tags are fuckin solid. Don't even worry.
+  session_start();
   if(!isset($_SESSION['username'])){
     header("location:index.php");
     die();
   }
-  session_start();
   //Variables
   $load_subs = 5;
   
