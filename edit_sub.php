@@ -139,6 +139,11 @@
           }
         ?>
         <div id="form_wrap">
+          <div class="thumb_box">
+            <a <?php echo('href="uploads/' . $file_name . '.' . $extention . '" target="_blank"'); ?>>
+              <img <?php echo('src="uploads/lr/' . $file_name . '.jpg" alt="' . $title . '" class="img_const"'); ?>>
+            </a>
+          </div>
           <form id="form_submit" method="post" action="scripts/edit_script.php">
             <?php
               if($type==0){
