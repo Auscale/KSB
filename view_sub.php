@@ -201,6 +201,14 @@
           echo('
           <div id="story_sub_wrap">
             <ul id="sub_controls">
+              <li>Font Size: 
+                <select id="story_font_size">
+                  <option value="0">Tiny</option>
+                  <option value="1">Small</option>
+                  <option value="2" selected>Medium</option>
+                  <option value="3">Large</option>
+                </select>
+              </li>
               <li><a id="cozy_mode" href="javascript:void(0)">Cozy Mode</a></li>');
           if(isset($_SESSION['user_id'])){
             echo('<li><a href="scripts/favorite.php?sub=' . $sub_id . '">');

@@ -92,6 +92,20 @@ $("#news_bar_close").click(
   }
 );
 
+$("#story_font_size").change(
+  function(){
+    if($("#story_font_size").val() == 0){
+      $("#story_sub").css("font-size", "0.7em");
+    } else if($("#story_font_size").val() == 1){
+      $("#story_sub").css("font-size", "1em");
+    } else if($("#story_font_size").val() == 2){
+      $("#story_sub").css("font-size", "1.2em");
+    } else if($("#story_font_size").val() == 3){
+      $("#story_sub").css("font-size", "1.5em");
+    }
+  }
+);
+
 $(".forum_category_collapse").each(function(){
   $(this).click(function(){
     if ($(this).closest("tbody").next("tbody").is(":visible")){
