@@ -52,15 +52,19 @@
   //add audit table copy here.
   //build tag string from current tags
   $query = "select t.name from tag t join sub_tag st on st.tag_id = t.tag_id where st.sub_id='$sub_id';";
-  $result = ,mysqli_query($con, $query);
+  $result = mysqli_query($con, $query);
   if(!$result){
     die(mysqli_error($con));
   }
   while($row = mysqli_fetch_array($result)){
-    $tag_string = "whatever";
+    $old_tag_string .= $row[0] . " ";
   }
   //remember in this context, create_by is the person who did the edit that replaced this version.
-  $query = "insert into sub_audit (sub_id, title, description, rating, source, filename, tags, create_date, create_by) values ('$sub_id','$old_title','$old_desc','$old_rating','$old_source','$file_name','$tag_string','$mysql_date','$user_id');";
+  $query = "insert into sub_audit (sub_id, title, description, rating, source, filename, tags, create_date, create_by) values ('$sub_id','$old_title','$old_desc','$old_rating','$old_source','$file_name','$old_tag_string','$mysql_time','$user_id');";
+  $result = mysqli_query($con, $query);
+  if(!$result){
+    die(mysqli_error($con));
+  }
   //update submission table
   $query = "update sub set title='$title', description='$desc', rating='$rating', source='$source', filename='$new_file_name' where sub_id='$sub_id';";
   $result = mysqli_query($con, $query);
