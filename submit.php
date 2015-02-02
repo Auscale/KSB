@@ -15,6 +15,7 @@
     <!--
     KSB
     Project started 1/12/14
+    That's the first of December, not the 12th of January, you yankiee fucks.
     -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -22,28 +22,47 @@
   $tag_string = mysqli_real_escape_string($con, $_POST['sub_tags']);
   $source     = mysqli_real_escape_string($con, $_POST['sub_source']);
   $tag_string = strtolower(trim($tag_string));
-  $user_id    = mysqli_real_escape_string($con, $_SESSION['user_id']);
-  $sub_type   = mysqli_real_escape_string($con, $_SESSION['sub_type']);
+  $user_id    = $_SESSION['user_id'];
   $mysql_time = date("Y-m-d H:i:s", time());
   
   //if story, update txt file
-  $query = "select filename, extention, type from sub where sub_id='$sub_id';";
+  $query = "select filename, extention, type, title, description, rating, source from sub where sub_id='$sub_id';";
   $result = mysqli_query($con, $query);
   if(!$result){
     die(mysqli_error($con));
   } else {
     $row = mysqli_fetch_row($result);
-    $file_name = $row[0];
-    $extention = $row[1];
-    $type      = $row[2];
+    $file_name  = $row[0];
+    $extention  = $row[1];
+    $type       = $row[2];
+    $old_title  = $row[3];
+    $old_desc   = $row[4];
+    $old_rating = $row[5];
+    $old_source = $row[6];
     if($type == 0){
-      //overwrite story file with new one.
-      file_put_contents("uploads/" . $file_name . '.' . $extention, $story_content);
+      //copy old text file to backup folder.
+      //generate new filename
+      $new_file_name = uniqid();
+      //create new file
+      file_put_contents("uploads/" . $new_file_name . '.' . $extention, $story_content);
+    } else {
+      $new_file_name = $file_name;
     }
   }
   //add audit table copy here.
+  //build tag string from current tags
+  $query = "select t.name from tag t join sub_tag st on st.tag_id = t.tag_id where st.sub_id='$sub_id';";
+  $result = ,mysqli_query($con, $query);
+  if(!$result){
+    die(mysqli_error($con));
+  }
+  while($row = mysqli_fetch_array($result)){
+    $tag_string = "whatever";
+  }
+  //remember in this context, create_by is the person who did the edit that replaced this version.
+  $query = "insert into sub_audit (sub_id, title, description, rating, source, filename, tags, create_date, create_by) values ('$sub_id','$old_title','$old_desc','$old_rating','$old_source','$file_name','$tag_string','$mysql_date','$user_id');";
   //update submission table
-  $query = "update sub set title='$title', description='$desc', rating='$rating', source='$source' where sub_id='$sub_id';";
+  $query = "update sub set title='$title', description='$desc', rating='$rating', source='$source', filename='$new_file_name' where sub_id='$sub_id';";
   $result = mysqli_query($con, $query);
   if(!$result){
     die(mysqli_error($con));

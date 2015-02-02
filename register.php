@@ -62,7 +62,7 @@
             </div>');
           } else {
             echo('
-            <form id="nav_login_form" method="post" action="scripts/scripts/sign_in_script.php">
+            <form id="nav_login_form" method="post" action="scripts/sign_in_script.php">
               <input class="nav_form_text" type="text" name="username" placeholder="Username">
               <input class="nav_form_text" type="password" name="password" placeholder="Password">
               <div id="form_buttons">
@@ -101,6 +101,14 @@
             <input type="password" id="reg_conf_password" name="repeat_password" required>
             <input type="submit" class="reg_submit" value="Sign Up">
           </form>
+          <?php
+            if(isset($_SESSION['message'])){
+              echo("<span class='error_message'>");
+              echo($_SESSION['message']);
+              echo("</span>");
+              unset($_SESSION['message']);
+            }
+            ?>
         </div>
       </div>
     </div>
