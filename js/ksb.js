@@ -94,13 +94,14 @@ $("#news_bar_close").click(
 
 $("#story_font_size").change(
   function(){
-    if($("#story_font_size").val() == 0){
+    var font_value = $("#story_font_size").val();
+    if(font_value == 0){
       $("#story_sub").css("font-size", "0.7em");
-    } else if($("#story_font_size").val() == 1){
+    } else if(font_value == 1){
       $("#story_sub").css("font-size", "1em");
-    } else if($("#story_font_size").val() == 2){
+    } else if(font_value == 2){
       $("#story_sub").css("font-size", "1.2em");
-    } else if($("#story_font_size").val() == 3){
+    } else if(font_value == 3){
       $("#story_sub").css("font-size", "1.5em");
     }
   }

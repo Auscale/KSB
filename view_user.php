@@ -1,5 +1,29 @@
 <?php
   session_start();
+  
+  if(!isset($_GET['id'])){
+    header('location:sub_list.php');
+  }
+  $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
+  
+  //get user info
+  $view_user_id = mysqli_real_escape_string($con, $_GET['id']);
+  $query = "select u.username, u.create_date, s.filename, u.profile_header_offset from user u join sub s on s.sub_id = u.profile_header_sub_id where user_id='$view_user_id';";
+  $result = mysqli_query($con, $query);
+  if (!$result) {
+    die(mysqli_error($con));
+  }
+  
+  $row = mysqli_fetch_array($result);
+  $view_username = $row[0];
+  $view_user_date = $row[1];
+  $profile_header_sub_filename = $row[2];
+  if($row[3] == ''){
+    $profile_header_offset = 0;
+  } else {
+    $profile_header_offset = $row[3];
+  }
+  
 ?>
 <!doctype html>
 <html>
@@ -9,11 +33,16 @@
     Project started 1/12/14
     
     Notes:
-    Users must be logged in to submit something.
+      Nested comments are to be placed within the comment_parent class AS comment_parent.
+      Add a way to edit tags from here, only for registered users.
     -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KSB</title>
+    <title>KSB
+    <?php
+      echo(" - $view_username's Profile");
+    ?>
+    </title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
   </head>
@@ -22,7 +51,7 @@
       <ul id="navbar_small">
         <li>
           <a id="menu_link" href="javascript:void(0)">
-            <i id="menu_icon" class="fa fa-bars fa-lg navbar_left"></i>
+            <i class="fa fa-bars fa-lg navbar_left"></i>
           </a>
         </li>
         <li>
@@ -43,8 +72,8 @@
         <li><a href="news.php">News</a></li>
       </ul>
       <div id="navbar_search">
-        <form method="GET" action="sub_list.php">
-          <input type="text" id="navbar_search_box" name="tags" placeholder="Search...">
+        <form>
+          <input type="text" id="navbar_search_box" placeholder="Search...">
         </form>
       </div>
       <ul id="navbar_menu">
@@ -53,6 +82,11 @@
         <li><a href="forum.php">Forum</a></li>
         <li><a href="news.php">News</a></li>
       </ul>
+      <div id="navbar_search">
+        <form>
+          <input type="text" id="navbar_search_box" placeholder="Search...">
+        </form>
+      </div>
       <div id="navbar_user">
       
         <?php
@@ -61,8 +95,8 @@
             echo('
             <div id="nav_user_links">
               <a href="view_user.php?id=' . $user_id . '">My Profile</a>
-              <a href="favorite_list.php?user=' . $user_id . '">My Favorites</a>
-              <a href="upload_list.php?user=' . $user_id . '">My Uploads</a>
+              <a href="sub_list.php?m=fav&user=' . $user_id . '">My Favorites</a>
+              <a href="sub_list.php?m=upl&user=' . $user_id . '">My Uploads</a>
               <a href="mod_cp.php">Mod CP</a>
               <a href="admin_cp.php">Admin CP</a>
               <a href="scripts/sign_out.php">Sign Out</a>
@@ -79,7 +113,6 @@
             </form>');
           }
         ?>
-        
       </div>
       <ul id="tab_container">
         <li class="tabs tabs_left tabs_page"><a href="sub_list.php">Posts</a></li>
@@ -95,11 +128,42 @@
           }
         ?></li>
       </ul>
-      <div id="page">
-        <div id="splash_wrap">
-          <form method="GET" action="sub_list.php">
-            <input type="text" id="home_search" name="tags" autofocus>
-          </form>
+      <div id="profile_wrap">
+        <div class="profile_header"
+          <?php
+            if($profile_header_sub_filename != ''){
+              echo('style="background-image:url(\'uploads/lr/' . $profile_header_sub_filename . '.jpg\');background-position-y:-' . $profile_header_offset . 'px !important;"');
+            }
+          ?>
+        >
+          <div class="profile_namebox">
+            <span class="profile_username"><?php echo($view_username); ?></span>
+          </div>
+        </div>
+        <div class="profile_navbar">
+          <ul>
+            <li class="navbar_left navbar_glow"><a href="#">Message</a></li>
+            <li class="navbar_left navbar_glow"><a href="#">Message</a></li>
+            <?php
+              //only show edit profile link if logged in as this user, or have permission
+              if($_SESSION['user_id'] === $view_user_id){
+                echo('<li class="navbar_right navbar_glow"><a href="edit_user.php">Edit Profile</a></li>');
+              }
+            ?>
+          </ul>
+        </div>
+        <div class="profile_content">
+          <div class="profile_sidebar">
+            <span class="sidebar_title">User Stats</span>
+            <table class="image_details">
+              <tr><td class="image_details_attribute">Uploads:</td><td>102</td></tr>
+              <tr><td class="image_details_attribute">Favorites:</td><td>901</td></tr>
+              <tr><td class="image_details_attribute">Member Since:</td><td>June 14th 2001</td></tr>
+            </table>
+          </div>
+          <div class="profile_main">
+            Main
+          </div>
         </div>
       </div>
     </div>
@@ -107,3 +171,6 @@
     <script src="js/ksb.js"></script>
   </body>
 </html>
+<?php
+  mysqli_close($con);
+?>

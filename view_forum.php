@@ -60,7 +60,7 @@
             $user_id = $_SESSION['user_id'];
             echo('
             <div id="nav_user_links">
-              <a href="view_profile.php?user=' . $user_id . '">My Profile</a>
+              <a href="view_user.php?id=' . $user_id . '">My Profile</a>
               <a href="favorite_list.php?user=' . $user_id . '">My Favorites</a>
               <a href="upload_list.php?user=' . $user_id . '">My Uploads</a>
               <a href="mod_cp.php">Mod CP</a>
