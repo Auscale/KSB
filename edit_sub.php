@@ -103,7 +103,7 @@
           }
         ?></li>
       </ul>
-      <div id="page">
+      <div id="split_page">
         <?php
           //get current sub info from database
           $query = "select title, description, rating, source, type, filename, extention from sub where sub_id='$sub_id';";
@@ -138,7 +138,7 @@
             $story_content = file_get_contents('uploads/' . $file_name . '.' . $extention);
           }
         ?>
-        <div id="form_wrap">
+        <div id="page_left">
           <div class="thumb_box">
             <a <?php echo('href="uploads/' . $file_name . '.' . $extention . '" target="_blank"'); ?>>
               <img <?php echo('src="uploads/lr/' . $file_name . '.jpg" alt="' . $title . '" class="img_const"'); ?>>
@@ -165,6 +165,87 @@
             <input type="hidden" name="sub_id" value=<?php echo('"' . $sub_id . '"'); ?>>
             <input type="submit" class="reg_submit" value="Update">
           </form>
+        </div>
+        <div id="page_right">
+          <span class="pr_title">Post History</span>
+          <table>
+            <tr>
+              <th></th><th>Title</th><th>Description</th><th>Rating</th><th>Source</th><th>Tags</th><th>Reason</th><th>Created</th><th></th>
+            </tr>
+            <?php
+              
+              $query = "select sa.sub_audit_id, sa.title, sa.description, sa.rating, sa.source, sa.tags, sa.reason, sa.create_date, u.username, sa.filename from sub_audit sa join user u on u.user_id = sa.create_by where sub_id='$sub_id';";
+              $result = mysqli_query($con, $query);
+              if(!$result){
+                die(mysqli_error($con));
+              }
+              while($row = mysqli_fetch_row($result)){
+                $count = count($row);
+                
+                if(isset($old_row)){
+                  for($i=0; $i<$count; $i++){
+                    //do something with $row[$i] and $old_row[$i]
+                    if($row[$i] === $old_row[$i]){
+                      $row_change[$i] = 0;
+                    } else {
+                      $row_change[$i] = 1;
+                    }
+                  }
+                }
+                
+                echo("<tr>");
+                
+                if(isset($row_change)){
+                  echo("<td><a href='#$row[0]'><i class='fa fa-history'></i></a></td>");
+                  if($row_change[1] === 0){
+                    echo("<td>$row[1]</td>");
+                  } else {
+                    echo("<td class='highlight_cell'>$row[1]</td>");
+                  }
+                  if($row_change[2] === 0){
+                    echo("<td>$row[2]</td>");
+                  } else {
+                    echo("<td class='highlight_cell'>$row[2]</td>");
+                  }
+                  if($row_change[3] === 0){
+                    echo("<td>$row[3]</td>");
+                  } else {
+                    echo("<td class='highlight_cell'>$row[3]</td>");
+                  }
+                  if($row_change[4] === 0){
+                    echo("<td>$row[4]</td>");
+                  } else {
+                    echo("<td class='highlight_cell'>$row[4]</td>");
+                  }
+                  if($row_change[5] === 0){
+                    echo("<td>$row[5]</td>");
+                  } else {
+                    echo("<td class='highlight_cell'><textarea class='textarea_disabled' disabled>$row[5]</textarea></td>");
+                  }
+                  if($row_change[6] === 0){
+                    echo("<td>$row[6]</td>");
+                  } else {
+                    echo("<td class='highlight_cell'>$row[6]</td>");
+                  }
+                  echo("<td>$row[7] by $row[8]</td>");
+                  echo("<td><a href='#$row[9]'><i class='fa fa-file-text-o'></i></a></td>");
+                } else {
+                  echo("<td><a href='#$row[0]'><i class='fa fa-history'></i></a></td>");
+                  echo("<td>$row[1]</td>");
+                  echo("<td>$row[2]</td>");
+                  echo("<td>$row[3]</td>");
+                  echo("<td>$row[4]</td>");
+                  echo("<td><textarea class='textarea_disabled' disabled>$row[5]</textarea></td>");
+                  echo("<td>$row[6]</td>");
+                  echo("<td>$row[7] by $row[8]</td>");
+                  echo("<td><a href='#$row[9]'><i class='fa fa-file-text-o'></i></a></td>");
+                }
+                
+                echo("</tr>");
+                $old_row = $row;
+              }
+            ?>
+          </table>
         </div>
       </div>
     </div>

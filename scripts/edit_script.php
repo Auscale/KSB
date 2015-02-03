@@ -56,9 +56,11 @@
   if(!$result){
     die(mysqli_error($con));
   }
+  $old_tag_string = '';
   while($row = mysqli_fetch_array($result)){
     $old_tag_string .= $row[0] . " ";
   }
+  $old_tag_string = trim($old_tag_string);
   //remember in this context, create_by is the person who did the edit that replaced this version.
   $query = "insert into sub_audit (sub_id, title, description, rating, source, filename, tags, create_date, create_by) values ('$sub_id','$old_title','$old_desc','$old_rating','$old_source','$file_name','$old_tag_string','$mysql_time','$user_id');";
   $result = mysqli_query($con, $query);

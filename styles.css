@@ -46,6 +46,24 @@ table span{
   color: red;
 }
 
+#split_page{
+  display:table;
+  width:100%;
+}
+
+#page_left{
+  display:table-cell;
+  vertical-align:top;
+  border-right:1px solid #CCCCCC;
+  padding:20px;
+  width:30%;
+}
+
+#page_right{
+  display:table-cell;
+  padding:10px;
+}
+
 .thumb_box{
   text-align:center;
 }
@@ -368,16 +386,23 @@ table span{
   margin-bottom:10px;
 }
 
-.sub_form_label{
+label{
   display:block;
+}
+
+.highlight_cell{
+  color:darkred;
+  background-color:#FFEEEE;
+}
+
+.textarea_disabled{
+  resize:none;
+  background-color:#666666;
+  color:white;
 }
 
 .sub_form_button{
   width:100%;
-}
-
-#form_wrap label{
-  display:block;
 }
 
 #form_wrap{
@@ -768,6 +793,21 @@ table span{
   
   .sub_image_link{
     padding-right:0;
+  }
+  
+  #split_page{
+    display:block;
+    width:100%;
+  }
+  
+  #page_left{
+    display:block;
+    width:100%;
+  }
+  
+  #page_right{
+    display:block;
+    width:100%;
   }
   
 }
