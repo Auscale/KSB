@@ -197,7 +197,7 @@
           $tmp_img = imagecreatetruecolor($output_width, $output_height);
           
           imagecopyresampled($tmp_img, $img, 0, 0, 0, 0, $output_width, $output_height, $width, $height);
-          imagejpeg($tmp_img, $new_thumb_name . ".jpg", 75);
+          imagejpeg($tmp_img, $new_thumb_name . ".jpg", 90);
           imagedestroy($tmp_img);
           imagedestroy($img);
           

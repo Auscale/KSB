@@ -15,6 +15,14 @@ body{
   font-family:Helvetica, Arial, sans-serif;
 }
 
+ul{
+  font-size: 0;
+}
+
+ul li{
+  font-size: initial;
+}
+
 body, ul, .nav_button{
   margin:0px;
   border:0px;
@@ -53,6 +61,73 @@ table span{
 .img_const{
   max-width:100%;
   max-height:500px;
+}
+
+#profile_wrap{
+  max-width:1000px;
+  margin:0 auto;
+  border-left:1px solid #333333;
+  border-right:1px solid #333333;
+  border-bottom:1px solid #333333;
+}
+
+.profile_header{
+  width:100%;
+  height:250px;
+  background-repeat:no-repeat;
+  background-position:center top;
+  position:relative;
+}
+
+.profile_header ul{
+  font-size:0;
+}
+
+.profile_navbar{
+  background-color:#333333;
+  overflow:auto;
+}
+
+.profile_navbar ul li{
+  display:inline-block;
+}
+
+.profile_navbar ul li a{
+  text-decoration:none;
+  color:white;
+  padding:10px;
+  display:block;
+  transition:background-color 0.3s ease, color 0.2s linear, border 0.3s ease;
+}
+
+.navbar_glow a:hover{
+  background-color:rgba(255,255,255,0.2);
+}
+
+.profile_content{
+  display:table;
+}
+
+.profile_sidebar{
+  display:table-cell;
+  vertical-align:top;
+  padding:20px;
+}
+
+.profile_main{
+  display:table-cell;
+  padding:10px;
+}
+
+.profile_namebox{
+  position:absolute;
+  bottom:0;
+  right:0;
+  background-color:rgba(0,0,0,0.7);
+  color:white;
+  margin:30px;
+  padding:10px;
+  font-size:1.5em;
 }
 
 #news_bar{
@@ -239,6 +314,11 @@ table span{
 #navbar_search_box{
   width:100%;
   box-sizing:border-box;
+}
+
+#search_box{
+  min-width:200px;
+  width:100%;
 }
 
 #navbar_user{
@@ -476,6 +556,18 @@ table span{
   padding-right:3px;
 }
 
+.image_details td{
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size:0.8em;
+}
+
+.image_details_attribute{
+  font-weight:bold;
+}
+
 #main{
   display:table-cell;
   padding:10px;
@@ -546,6 +638,10 @@ table span{
 }
 
 #sub_controls{
+  text-align:center;
+}
+
+#sidebar_controls{
   text-align:center;
 }
 
@@ -729,6 +825,8 @@ table span{
   
   #search_box{
     font-size:0.8em;
+    min-width:150px;
+    width:100%;
   }
   
   #sidebar{
@@ -768,6 +866,10 @@ table span{
   
   .sub_image_link{
     padding-right:0;
+  }
+  
+  .profile_header{
+    height:200px;
   }
   
 }
@@ -852,6 +954,10 @@ table span{
   .forum_user_avatar{
     width:50px;
     height:50px;
+  }
+  
+  .profile_header{
+    height:100px;
   }
   
 }

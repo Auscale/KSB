@@ -54,7 +54,7 @@
             $user_id = $_SESSION['user_id'];
             echo('
             <div id="nav_user_links">
-              <a href="view_profile.php?user=' . $user_id . '">My Profile</a>
+              <a href="view_user.php?id=' . $user_id . '">My Profile</a>
               <a href="favorite_list.php?user=' . $user_id . '">My Favorites</a>
               <a href="upload_list.php?user=' . $user_id . '">My Uploads</a>
               <a href="mod_cp.php">Mod CP</a>
@@ -103,7 +103,7 @@
               <div class="news_item">
                 <div class="news_header">
                   <span>' . $row[0] . '</span>
-                  <span class="news_details">Posted by: <a class="header_link" href="view_user.php?user=' . $row[2] . '">' . $row[3] . '</a>');
+                  <span class="news_details">Posted by: <a class="header_link" href="view_user.php?id=' . $row[2] . '">' . $row[3] . '</a>');
                   if($perm_post_news === 1){
                     echo('<a class="header_link" href="scripts/post_news_script.php?m=delete&news_id=' . $row[5] . '">Delete</a></span>');
                   }

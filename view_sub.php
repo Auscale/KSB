@@ -118,7 +118,7 @@
             $user_id = $_SESSION['user_id'];
             echo('
             <div id="nav_user_links">
-              <a href="view_profile.php?user=' . $user_id . '">My Profile</a>
+              <a href="view_user.php?id=' . $user_id . '">My Profile</a>
               <a href="sub_list.php?m=fav&user=' . $user_id . '">My Favorites</a>
               <a href="sub_list.php?m=upl&user=' . $user_id . '">My Uploads</a>
               <a href="mod_cp.php">Mod CP</a>
@@ -177,21 +177,28 @@
             </ul>
           </div>
           <table class="image_details">
-            <tr><td>Type:</td><td><?php echo($type); ?></td></tr>
-            <tr><td>Rating:</td><td><?php echo($rating); ?></td></tr>
-            <tr><td>Score:</td><td><?php echo($score); ?></td></tr>
-            <?php if($source != ''){ echo("<tr><td>Source:</td><td>" . $source . "</td></tr>"); } ?>
+            <tr><td class="image_details_attribute">Type:</td><td><?php echo($type); ?></td></tr>
+            <tr><td class="image_details_attribute">Rating:</td><td><?php echo($rating); ?></td></tr>
+            <tr><td class="image_details_attribute">Score:</td><td><?php echo($score); ?></td></tr>
+            <?php if($source != ''){ echo('<tr><td class="image_details_attribute">Source:</td><td>' . $source . '</td></tr>'); } ?>
             <?php
               if($type_id != 0){
-                echo('<tr><td>Resolution:</td><td>' . $resolution_w . "x" . $resolution_h . '</td></tr>');
+                echo('<tr><td class="image_details_attribute">Resolution:</td><td>' . $resolution_w . "x" . $resolution_h . '</td></tr>');
               }
             ?>
-            <tr><td>Uploaded By:</td><td><?php echo($create_by); ?></td></tr>
-            <tr><td>Uploaded On:</td><td><?php echo($create_date); ?></td></tr>
+            <tr><td class="image_details_attribute">Uploaded By:</td><td><?php echo($create_by); ?></td></tr>
+            <tr><td class="image_details_attribute">Uploaded On:</td><td><?php echo($create_date); ?></td></tr>
           </table>
-          <div id="sub_controls">
-            <a href=<?php echo('"edit_sub.php?sub=' . $sub_id . '"'); ?>>Edit Submission</a>
-          </div>
+          <ul id="sidebar_controls">
+            
+            <?php
+              if(isset($_SESSION['user_id'])){
+                echo('<li><a href="edit_sub.php?sub=' . $sub_id . '">Edit Submission</a></li>');
+                echo('<li><a href="javascript:set_avatar(' . $sub_id . ');">Set Avatar</a></li>');
+                echo('<li><a href="javascript:set_header(' . $sub_id . ');">Set Profile Header</a></li>');
+              }
+            ?>
+          </ul>
         </div>
         <div id="main">
         <?php

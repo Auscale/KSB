@@ -3,27 +3,24 @@
   session_start();
   
   if(!isset($_SESSION['user_id'])){
-    $_SESSION['message'] = 'You must be logged in to post news!';
+    $_SESSION['error_msg'] = 'You must be logged in to edit your profile!';
     header('location:sign_in.php');
-  } else {
-    //check if user has permission to post news.
-    
-    //otherwise kick em out
-    
   }
-
+  
+  $con = mysqli_connect("localhost", "auscaledb", "124578", "ksb");
+  
 ?>
 
 <!doctype html>
 <html>
   <head>
     <!--
-    KSB
-    Project started 1/12/14
+      KSB
+      Project started 1/12/14
     -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KSB Post News</title>
+    <title>KSB - Edit Post</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
     <script src="ckeditor/ckeditor.js"></script>
@@ -54,6 +51,11 @@
         <li><a href="forum.php">Forum</a></li>
         <li><a href="news.php">News</a></li>
       </ul>
+      <div id="navbar_search">
+        <form>
+          <input type="text" id="navbar_search_box" placeholder="Search...">
+        </form>
+      </div>
       <div id="navbar_user">
       
         <?php
@@ -70,7 +72,7 @@
             </div>');
           } else {
             echo('
-            <form id="nav_login_form" method="post" action="scripts/sign_in_script.php">
+            <form id="nav_login_form" method="post" action="scripts/scripts/sign_in_script.php">
               <input class="nav_form_text" type="text" name="username" placeholder="Username">
               <input class="nav_form_text" type="password" name="password" placeholder="Password">
               <div id="form_buttons">
@@ -83,10 +85,10 @@
         
       </div>
       <ul id="tab_container">
-        <li class="tabs tabs_left tabs_page"><a href="sub_list.php">Posts</a></li>
+        <li class="tabs tabs_left tabs_page" id="tab_active"><a href="sub_list.php">Posts</a></li>
         <li class="tabs tabs_left tabs_page"><a href="submit.php">Submit</a></li>
         <li class="tabs tabs_left tabs_page"><a href="forum.php">Forum</a></li>
-        <li class="tabs tabs_left tabs_page" id="tab_active"><a href="news.php">News</a></li>
+        <li class="tabs tabs_left tabs_page"><a href="news.php">News</a></li>
         <li class="tabs tabs_right tabs_drop">
         <?php
           if(isset($_SESSION['username'])){
@@ -98,21 +100,7 @@
       </ul>
       <div id="page">
         <div id="form_wrap">
-          <form id="form_submit" method="post" action="scripts/post_news_script.php">
-            <label for="news_title">Title</label>
-            <input type="text" class="sub_form_text" id="news_title" name="news_title">
-            <label id="sub_form_story_paste_label" for="news_body">Body</label>
-            <textarea class="sub_form_textarea ckeditor" id="news_body" name="news_body"></textarea>
-            <input type="submit" class="reg_submit submit_pad" value="Post">
-            <?php
-            if(isset($_SESSION['message'])){
-              echo("<span class='error_message'>");
-              echo($_SESSION['message']);
-              echo("</span>");
-              unset($_SESSION['message']);
-            }
-            ?>
-          </form>
+          
         </div>
       </div>
     </div>
@@ -120,3 +108,6 @@
     <script src="js/ksb.js"></script>
   </body>
 </html>
+<?php
+  mysqli_close($con);
+?>
